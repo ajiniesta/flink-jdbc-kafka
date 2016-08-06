@@ -14,10 +14,10 @@ import java.util.Random;
  */
 public class BootstrapDatabase {
 
-	private static final String DB_DRIVER = "org.h2.Driver";
-	private static final String DB_CONNECTION = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1";
-	private static final String DB_USER = "sa";
-	private static final String DB_PASSWORD = "sa";
+	public static final String DB_DRIVER = "org.h2.Driver";
+	public static final String DB_CONNECTION = "jdbc:h2:file:/tmp/db"+System.currentTimeMillis();//"jdbc:h2:mem:test;DB_CLOSE_DELAY=-1";
+	public static final String DB_USER = "sa";
+	public static final String DB_PASSWORD = "sa";
 	private static final int NUM_ROWS = 1000;
 
 	private static Random random = new Random();
@@ -61,7 +61,7 @@ public class BootstrapDatabase {
 
 	private static void insertRow(String insert, Connection conn) throws SQLException {
 		PreparedStatement ps = conn.prepareStatement(insert);
-		ps.setLong(1, System.currentTimeMillis()-random.nextLong()*1000L);
+		ps.setLong(1, System.currentTimeMillis()-random.nextInt(100000));
 		ps.setInt(2, random.nextInt(1000));
 		ps.executeUpdate();
 	}
