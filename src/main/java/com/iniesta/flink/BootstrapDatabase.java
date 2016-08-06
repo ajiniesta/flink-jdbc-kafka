@@ -1,5 +1,6 @@
 package com.iniesta.flink;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -15,7 +16,8 @@ import java.util.Random;
 public class BootstrapDatabase {
 
 	public static final String DB_DRIVER = "org.h2.Driver";
-	public static final String DB_CONNECTION = "jdbc:h2:file:/tmp/db"+System.currentTimeMillis();//"jdbc:h2:mem:test;DB_CLOSE_DELAY=-1";
+	private static final String DB_FILE = "/tmp/db"+System.currentTimeMillis();
+	public static final String DB_CONNECTION = "jdbc:h2:file:"+DB_FILE;//"jdbc:h2:mem:test;DB_CLOSE_DELAY=-1";
 	public static final String DB_USER = "sa";
 	public static final String DB_PASSWORD = "sa";
 	private static final int NUM_ROWS = 1000;
@@ -24,6 +26,8 @@ public class BootstrapDatabase {
 	
 	static {
 		loadDump();
+		File file = new File(DB_FILE);
+		file.deleteOnExit();
 	}
 
 	private static Connection getConnection() {
